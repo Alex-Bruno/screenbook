@@ -74,6 +74,6 @@ public class Autor {
         return "Autor: " + nome + "\n" +
                 "Ano de nascimento: " + anoNascimento  + "\n" +
                 "Ano de falecimento: " + anoFalecimento + "\n" +
-                "Livros: [" + livros.stream().map(Livro::getTitulo).toList() + "]";
+                "Livros: " + livros.stream().map(Livro::getTitulo).toList() + "\n";
     }
 }

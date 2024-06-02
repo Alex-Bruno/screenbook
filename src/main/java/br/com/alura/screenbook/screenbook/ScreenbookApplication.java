@@ -11,7 +11,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class ScreenbookApplication implements CommandLineRunner {
-
 	@Autowired
 	private LivroRepository livroRepository;
 

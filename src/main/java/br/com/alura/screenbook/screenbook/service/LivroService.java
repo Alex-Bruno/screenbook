@@ -1,13 +1,12 @@
 package br.com.alura.screenbook.screenbook.service;
 
-import br.com.alura.screenbook.screenbook.model.ApiResposta;
-import br.com.alura.screenbook.screenbook.model.Autor;
-import br.com.alura.screenbook.screenbook.model.DadosLivro;
-import br.com.alura.screenbook.screenbook.model.Livro;
+import br.com.alura.screenbook.screenbook.model.*;
 import br.com.alura.screenbook.screenbook.repository.AutorRepository;
 import br.com.alura.screenbook.screenbook.repository.LivroRepository;
+import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -25,6 +24,10 @@ public class LivroService {
         this.autorService = new AutorService(autorRepository);
     }
 
+    public List<Livro> findAll() {
+        return repositorio.findAll();
+    }
+
     public Optional<DadosLivro> getDadosLivro(String nomeLivro) {
         var json = consumo.obterDados(ENDERECO + nomeLivro.replace(" ", "+"));
         ApiResposta resposta = conversor.obterDados(json, ApiResposta.class);
@@ -38,15 +41,17 @@ public class LivroService {
     }
 
     public Livro salvarLivro(DadosLivro dadosLivro) {
-        Autor autor = autorService.criarAutor(dadosLivro.autores().get(0));
+        Autor autor = autorService.criarOuBuscarAutor(dadosLivro.autores().get(0));
 
         Livro livro = new Livro(dadosLivro);
         livro.setAutor(autor);
 
-        repositorio.save(livro);
+        autorService.salvarAutor(livro);
 
         return livro;
     }
 
-
+    public List<Livro> obterLivrosPeloIdioma(Idioma idioma) {
+        return repositorio.obterLivrosPeloIdioma(idioma);
+    }
 }

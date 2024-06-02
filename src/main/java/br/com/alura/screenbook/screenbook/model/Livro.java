@@ -2,6 +2,8 @@ package br.com.alura.screenbook.screenbook.model;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+
 @Entity
 @Table(name = "livros")
 public class Livro {
@@ -12,10 +14,10 @@ public class Livro {
     private String idExterno;
     @Column(unique = true)
     private String titulo;
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "autor_id", referencedColumnName = "id")
     private Autor autor;
-    private String idioma;
+    private Idioma idioma;
     private Double downloads;
 
     public Livro() {}
@@ -59,11 +61,11 @@ public class Livro {
         this.autor = autor;
     }
 
-    public String getIdioma() {
+    public Idioma getIdioma() {
         return idioma;
     }
 
-    public void setIdioma(String idioma) {
+    public void setIdioma(Idioma idioma) {
         this.idioma = idioma;
     }
 
@@ -80,8 +82,8 @@ public class Livro {
         return "----- LIVRO -----\n" +
                 "Título: " + titulo + "\n" +
                 "Autor: " + autor.getNome() + "\n" +
-                "Idioma: " + idioma.toLowerCase() + "\n" +
+                "Idioma: " + idioma + "\n" +
                 "Número de downloads: " + downloads + "\n" +
-                "--------------------";
+                "--------------------\n";
     }
 }
